@@ -30,27 +30,97 @@ ProjectVendora is a vendor outage intelligence dashboard for IT, security, cloud
 
 ### Logical architecture
 
-```text
-Vendor status feeds (RSS / Atom / JSON)
-                |
-                v
-      Poller orchestration layer
-                |
-                v
-      Prisma ORM + PostgreSQL
-                |
-      -------------------------
-      |           |           |
-      v           v           v
- /api/vendors  /api/outages  /api/subscribe
-      |                       |
-      -----------     ---------
-                |     |
-                v     v
-        Next.js dashboard UI
-                |
-                v
-     Optional email alerts via Resend
+```mermaid
+flowchart TD
+  A[Vendor Status Feeds<br/>RSS / Atom / JSON] --> B[Poller Orchestration Layer]
+  B --> C[Prisma ORM]
+  C --> D[(PostgreSQL)]
+  D --> E[/api/vendors]
+  D --> F[/api/outages]
+  D --> G[/api/subscribe]
+  D --> H[/api/cron/poll]
+  E --> I[Next.js Dashboard UI]
+  F --> I
+  G --> I
+  H --> B
+  H --> J[Resend Email Delivery]
+  J --> K[Subscribers]
+```
+
+### Polling and alert lifecycle
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Scheduler as Cron / Manual Trigger
+  participant API as /api/cron/poll
+  participant Poller as Poller Layer
+  participant Feed as Vendor Feed
+  participant DB as PostgreSQL via Prisma
+  participant Mail as Resend
+  participant User as Subscriber
+
+  Scheduler->>API: GET /api/cron/poll
+  API->>Poller: runAllPollers()
+  loop For each active vendor
+    Poller->>Feed: Fetch RSS / Atom / JSON feed
+    Feed-->>Poller: Incident payload
+    Poller->>DB: Upsert normalized outages
+  end
+  API->>DB: Query recent CRITICAL / HIGH outages
+  API->>DB: Query eligible subscribers
+  API->>Mail: Send alert emails
+  Mail-->>User: Outage notification
+  API->>DB: Log notification delivery
+```
+
+### Data model overview
+
+```mermaid
+erDiagram
+  Vendor ||--o{ Outage : has
+  Outage ||--o{ NotificationLog : generates
+  Subscriber ||--o{ NotificationLog : receives
+
+  Vendor {
+    string id
+    string name
+    string slug
+    string feedUrl
+    string feedType
+    string statusPageUrl
+    string category
+    boolean isActive
+  }
+
+  Outage {
+    string id
+    string vendorId
+    string title
+    string severity
+    string status
+    string sourceId
+    datetime startedAt
+    datetime resolvedAt
+  }
+
+  Subscriber {
+    string id
+    string email
+    boolean isConfirmed
+    string[] vendorFilter
+    string[] severityFilter
+    boolean isActive
+  }
+
+  NotificationLog {
+    string id
+    string subscriberId
+    string outageId
+    string status
+    datetime sentAt
+    string errorMessage
+  }
 ```
 
 ### Application layers
