@@ -1,0 +1,150 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Vendora – IT Outage Intelligence Dashboard
+// Prisma Schema  ·  PostgreSQL
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Vendors ─────────────────────────────────────────────────────────────────
+
+model Vendor {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  slug          String         @unique
+  feedUrl       String
+  feedType      FeedType       @default(RSS)
+  statusPageUrl String?
+  logoEmoji     String?        @default("🌐")
+  category      VendorCategory @default(CLOUD)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  outages Outage[]
+
+  @@map("vendors")
+}
+
+// ─── Outages ─────────────────────────────────────────────────────────────────
+
+model Outage {
+  id          String       @id @default(cuid())
+  vendorId    String
+  vendor      Vendor       @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  title       String       @db.VarChar(500)
+  description String?      @db.Text
+  severity    Severity     @default(UNKNOWN)
+  status      OutageStatus @default(INVESTIGATING)
+
+  /// External identifier from the RSS/JSON feed — used for deduplication.
+  sourceId String? @db.VarChar(512)
+
+  /// Canonical URL to the incident on the vendor's status page.
+  sourceUrl String? @db.VarChar(2048)
+
+  startedAt  DateTime
+  resolvedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notifications NotificationLog[]
+
+  @@unique([vendorId, sourceId])
+  @@index([vendorId])
+  @@index([startedAt])
+  @@index([severity])
+  @@index([status])
+  @@map("outages")
+}
+
+// ─── Subscribers ─────────────────────────────────────────────────────────────
+
+model Subscriber {
+  id               String     @id @default(cuid())
+  email            String     @unique
+  isConfirmed      Boolean    @default(false)
+  confirmToken     String?    @unique @default(cuid())
+  unsubscribeToken String     @unique @default(cuid())
+
+  /// Empty array means "notify for all vendors".
+  vendorFilter String[] @default([])
+
+  /// Empty array means "notify for all severities".
+  severityFilter Severity[] @default([])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notifications NotificationLog[]
+
+  @@map("subscribers")
+}
+
+// ─── Notification Log ────────────────────────────────────────────────────────
+
+model NotificationLog {
+  id           String             @id @default(cuid())
+  subscriberId String
+  subscriber   Subscriber         @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  outageId     String
+  outage       Outage             @relation(fields: [outageId], references: [id], onDelete: Cascade)
+  sentAt       DateTime           @default(now())
+  status       NotificationStatus @default(SENT)
+  errorMessage String?            @db.Text
+
+  @@unique([subscriberId, outageId])
+  @@index([outageId])
+  @@index([subscriberId])
+  @@map("notification_log")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum FeedType {
+  RSS
+  JSON
+  ATOM
+}
+
+enum VendorCategory {
+  CLOUD
+  SECURITY
+  PRODUCTIVITY
+  DEVOPS
+  COMMUNICATION
+  CRM
+  ITSM
+  NETWORKING
+  MONITORING
+  OTHER
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  UNKNOWN
+}
+
+enum OutageStatus {
+  INVESTIGATING
+  IDENTIFIED
+  MONITORING
+  RESOLVED
+}
+
+enum NotificationStatus {
+  SENT
+  FAILED
+  SKIPPED
+}
