@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Shared TypeScript types used across the Vendora dashboard.
+// Shared TypeScript types used across the OutageIntel dashboard.
 // These mirror the Prisma models but are serialisation-safe (no Date objects).
 // ─────────────────────────────────────────────────────────────────────────────
 

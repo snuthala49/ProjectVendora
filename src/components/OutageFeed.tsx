@@ -93,7 +93,7 @@ export function OutageFeed({
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="h-20 animate-pulse rounded-lg bg-slate-800/60"
+            className="h-20 animate-pulse rounded-lg bg-[var(--oi-dark)]/70"
           />
         ))}
       </div>
@@ -102,10 +102,10 @@ export function OutageFeed({
 
   if (outages.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border border-slate-800 bg-slate-900 py-16 text-center">
+      <div className="flex flex-col items-center justify-center rounded-lg border border-[var(--oi-border)] bg-[var(--oi-dark)] py-16 text-center">
         <span className="mb-3 text-4xl">✅</span>
         <p className="text-sm font-medium text-slate-300">All systems operational</p>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-[var(--oi-muted)]">
           No outages in the selected time window
         </p>
       </div>
@@ -125,8 +125,8 @@ export function OutageFeed({
                   onClick={() => setSeverityFilter(sev)}
                   className={`rounded-full border px-3 py-1 text-xs font-medium ${
                     severityFilter === sev
-                      ? "border-blue-500 bg-blue-500/20 text-blue-300"
-                      : "border-slate-700 bg-slate-900 text-slate-400"
+                      ? "border-[var(--oi-primary)] bg-[var(--oi-primary)]/20 text-[var(--oi-primary-lt)]"
+                      : "border-[var(--oi-border)] bg-[var(--oi-dark)] text-[var(--oi-muted)]"
                   }`}
                 >
                   {sev === "ALL" ? "All" : sev}
@@ -136,10 +136,10 @@ export function OutageFeed({
           </div>
 
           <Select value={vendorFilter} onValueChange={setVendorFilter}>
-            <SelectTrigger className="ml-auto h-8 w-[220px] border-slate-700 bg-slate-900 text-xs text-slate-200">
+            <SelectTrigger className="ml-auto h-8 w-[220px] border-[var(--oi-border)] bg-[var(--oi-dark)] text-xs text-slate-200">
               <SelectValue placeholder="Filter by vendor" />
             </SelectTrigger>
-            <SelectContent className="border-slate-700 bg-slate-900 text-slate-200">
+            <SelectContent className="border-[var(--oi-border)] bg-[var(--oi-dark)] text-slate-200">
               <SelectItem value="ALL">All vendors</SelectItem>
               {(vendorsQuery.data?.vendors ?? []).map((v) => (
                 <SelectItem key={v.slug} value={v.slug}>
@@ -162,12 +162,12 @@ export function OutageFeed({
                 key={outage.id}
                 className={`rounded-lg border transition-colors ${
                   isResolved
-                    ? "border-slate-800 bg-slate-900/50 opacity-70"
+                    ? "border-[var(--oi-border)] bg-[var(--oi-dark)]/60 opacity-70"
                     : outage.severity === "CRITICAL"
-                      ? "border-red-500/30 bg-red-950/20"
+                      ? "border-[var(--oi-alert)]/30 bg-[var(--oi-alert)]/10"
                       : outage.severity === "HIGH"
                         ? "border-orange-500/20 bg-orange-950/10"
-                        : "border-slate-800 bg-slate-900"
+                        : "border-[var(--oi-border)] bg-[var(--oi-dark)]"
                 }`}
               >
                 <button
@@ -182,7 +182,7 @@ export function OutageFeed({
 
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex flex-wrap items-center gap-1.5">
-                      <span className="text-xs font-medium text-slate-400">
+                      <span className="text-xs font-medium text-[var(--oi-muted)]">
                         {outage.vendor.name}
                       </span>
                       <SeverityBadge severity={outage.severity as Severity} />
@@ -196,27 +196,27 @@ export function OutageFeed({
                   </div>
 
                   <div className="flex shrink-0 flex-col items-end gap-1">
-                    <span className="whitespace-nowrap text-[11px] text-slate-500">
+                    <span className="whitespace-nowrap text-[11px] text-[var(--oi-muted)]">
                       {formatDistanceToNow(new Date(outage.startedAt), {
                         addSuffix: true,
                       })}
                     </span>
                     {isExpanded ? (
-                      <ChevronUp className="h-3.5 w-3.5 text-slate-500" />
+                      <ChevronUp className="h-3.5 w-3.5 text-[var(--oi-muted)]" />
                     ) : (
-                      <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
+                      <ChevronDown className="h-3.5 w-3.5 text-[var(--oi-muted)]" />
                     )}
                   </div>
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-slate-800 px-3 pb-3 pt-2.5">
+                  <div className="border-t border-[var(--oi-border)] px-3 pb-3 pt-2.5">
                     {outage.description && (
-                      <p className="mb-3 text-xs leading-relaxed text-slate-400">
+                      <p className="mb-3 text-xs leading-relaxed text-[var(--oi-muted)]">
                         {outage.description}
                       </p>
                     )}
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--oi-muted)]">
                       <span>
                         Started: {new Date(outage.startedAt).toLocaleString()}
                       </span>
@@ -230,7 +230,7 @@ export function OutageFeed({
                           href={outage.sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-blue-400 hover:text-blue-300"
+                          className="flex items-center gap-1 text-[var(--oi-primary-lt)] hover:text-[var(--oi-primary)]"
                         >
                           <ExternalLink className="h-3 w-3" />
                           Source

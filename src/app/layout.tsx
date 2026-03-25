@@ -6,9 +6,9 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vendora — IT Outage Intelligence",
+  title: "OutageIntel — Real-Time IT Outage Intelligence",
   description:
-    "Real-time outage monitoring for AWS, Azure, Microsoft 365, Google Cloud, Salesforce, ServiceNow, CrowdStrike, Okta, Cloudflare, GitHub, Zoom, Slack, Broadcom and more.",
+    "Live outage monitoring for AWS, Azure, Google Cloud, Microsoft 365, CrowdStrike, Salesforce, ServiceNow and more.",
   keywords: [
     "outage monitoring",
     "IT status",
@@ -16,6 +16,17 @@ export const metadata: Metadata = {
     "cloud outage",
     "incident tracker",
   ],
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  openGraph: {
+    title: "OutageIntel",
+    description: "Your intelligence feed for enterprise IT outages.",
+    url: "https://outageintel.org",
+    siteName: "OutageIntel",
+  },
 };
 
 export default function RootLayout({

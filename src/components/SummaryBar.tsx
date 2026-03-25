@@ -43,7 +43,7 @@ export function SummaryBar({ summary, lastUpdated }: SummaryBarProps) {
   ];
 
   return (
-    <div className="border-b border-slate-800 bg-slate-900/60">
+    <div className="border-b border-[var(--oi-border)] bg-[var(--oi-dark)]/70">
       <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
         {/* Stats */}
         <div className="flex flex-wrap items-center gap-4">
@@ -53,13 +53,13 @@ export function SummaryBar({ summary, lastUpdated }: SummaryBarProps) {
               <span className="text-sm font-semibold text-white">
                 {s.value}
               </span>
-              <span className="text-xs text-slate-400">{s.label}</span>
+              <span className="text-xs text-[var(--oi-muted)]">{s.label}</span>
             </div>
           ))}
         </div>
 
         {/* Live indicator + last update */}
-        <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex items-center gap-2 text-xs text-[var(--oi-muted)]">
           <span className="flex items-center gap-1.5">
             <Activity className="h-3 w-3 text-green-400" />
             <span className="text-green-400 font-medium">Live</span>

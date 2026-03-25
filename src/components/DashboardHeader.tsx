@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, RefreshCw } from "lucide-react";
+import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 
 interface DashboardHeaderProps {
@@ -15,21 +16,10 @@ export function DashboardHeader({
   isRefreshing,
 }: DashboardHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-[var(--oi-border)] bg-[var(--oi-dark)]/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-sm shadow-lg">
-            🔔
-          </div>
-          <div>
-            <h1 className="text-base font-bold leading-tight text-white">
-              Vendora
-            </h1>
-            <p className="text-[10px] uppercase tracking-widest text-slate-400">
-              IT Outage Intelligence
-            </p>
-          </div>
+          <Logo variant="dark" size="sm" showWordmark />
         </div>
 
         {/* Actions */}
@@ -39,7 +29,7 @@ export function DashboardHeader({
             size="icon"
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="h-8 w-8 text-slate-400 hover:text-white"
+            className="h-8 w-8 text-[var(--oi-muted)] hover:text-white"
             title="Refresh now"
           >
             <RefreshCw
@@ -49,7 +39,7 @@ export function DashboardHeader({
           <Button
             onClick={onSubscribeClick}
             size="sm"
-            className="gap-1.5 bg-blue-600 text-white hover:bg-blue-700"
+            className="gap-1.5 bg-[var(--oi-primary)] text-white hover:bg-[var(--oi-primary-lt)]"
           >
             <Bell className="h-3.5 w-3.5" />
             Subscribe

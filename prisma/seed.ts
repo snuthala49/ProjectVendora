@@ -1,5 +1,5 @@
 /**
- * Vendora – Database seed
+ * OutageIntel – Database seed
  * Run with:  npm run db:seed
  *
  * Upserts 16 enterprise IT vendors with their public status feed URLs.
@@ -173,7 +173,7 @@ const vendors = [
 ] as const;
 
 async function main() {
-  console.log("🌱  Seeding Vendora database…\n");
+  console.log("🌱  Seeding OutageIntel database…\n");
 
   let created = 0;
   let updated = 0;

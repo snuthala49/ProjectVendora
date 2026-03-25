@@ -12,10 +12,13 @@ interface VendorGridProps {
 }
 
 const STATUS_CARD: Record<VendorStatus, string> = {
-  operational: "border-green-500/20 hover:border-green-500/40 bg-slate-900",
-  degraded: "border-yellow-400/30 hover:border-yellow-400/50 bg-slate-900",
-  outage: "border-red-500/40 hover:border-red-500/60 bg-slate-900",
-  unknown: "border-slate-700 hover:border-slate-600 bg-slate-900",
+  operational:
+    "border-green-500/20 hover:border-green-500/40 bg-[var(--oi-dark)]",
+  degraded:
+    "border-yellow-400/30 hover:border-yellow-400/50 bg-[var(--oi-dark)]",
+  outage: "border-red-500/40 hover:border-red-500/60 bg-[var(--oi-dark)]",
+  unknown:
+    "border-[var(--oi-border)] hover:border-[var(--oi-muted)] bg-[var(--oi-dark)]",
 };
 
 const STATUS_GLOW: Record<VendorStatus, string> = {
@@ -32,7 +35,7 @@ export function VendorGrid({
 }: VendorGridProps) {
   if (vendors.length === 0) {
     return (
-      <div className="rounded-lg border border-slate-800 bg-slate-900 px-6 py-12 text-center text-slate-400">
+      <div className="rounded-lg border border-[var(--oi-border)] bg-[var(--oi-dark)] px-6 py-12 text-center text-[var(--oi-muted)]">
         No vendors found. Run the seed script to populate vendor data.
       </div>
     );
@@ -56,7 +59,7 @@ export function VendorGrid({
               cardBorder,
               glow,
               isSelected &&
-                "ring-2 ring-blue-500 ring-offset-2 ring-offset-slate-950"
+                "ring-2 ring-[var(--oi-primary)] ring-offset-2 ring-offset-[var(--oi-dark)]"
             )}
           >
             {/* Logo + name */}
@@ -74,7 +77,7 @@ export function VendorGrid({
 
             {/* Active outage count badge */}
             {vendor.activeOutageCount > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white leading-none">
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[var(--oi-alert)] px-1 text-[10px] font-bold text-white leading-none">
                 {vendor.activeOutageCount}
               </span>
             )}
@@ -86,7 +89,7 @@ export function VendorGrid({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="absolute right-2 top-2 hidden rounded text-slate-600 opacity-0 transition-opacity hover:text-slate-300 group-hover:opacity-100 sm:block"
+                className="absolute right-2 top-2 hidden rounded text-[var(--oi-muted)] opacity-0 transition-opacity hover:text-slate-300 group-hover:opacity-100 sm:block"
                 title="Open status page"
               >
                 <ExternalLink className="h-3 w-3" />

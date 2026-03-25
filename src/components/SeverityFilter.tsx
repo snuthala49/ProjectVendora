@@ -35,10 +35,10 @@ export function SeverityFilter({
         value={severity}
         onValueChange={(v) => onSeverityChange(v as Severity | "ALL")}
       >
-        <SelectTrigger className="h-8 w-[130px] border-slate-700 bg-slate-900 text-xs text-slate-200 focus:ring-blue-500">
+        <SelectTrigger className="h-8 w-[130px] border-[var(--oi-border)] bg-[var(--oi-dark)] text-xs text-slate-200 focus:ring-[var(--oi-primary)]">
           <SelectValue placeholder="Severity" />
         </SelectTrigger>
-        <SelectContent className="border-slate-700 bg-slate-900 text-slate-200">
+        <SelectContent className="border-[var(--oi-border)] bg-[var(--oi-dark)] text-slate-200">
           <SelectItem value="ALL">All severities</SelectItem>
           <SelectItem value="CRITICAL">🔴 Critical</SelectItem>
           <SelectItem value="HIGH">🟠 High</SelectItem>
@@ -53,10 +53,10 @@ export function SeverityFilter({
         value={status}
         onValueChange={(v) => onStatusChange(v as OutageStatus | "ALL")}
       >
-        <SelectTrigger className="h-8 w-[140px] border-slate-700 bg-slate-900 text-xs text-slate-200 focus:ring-blue-500">
+        <SelectTrigger className="h-8 w-[140px] border-[var(--oi-border)] bg-[var(--oi-dark)] text-xs text-slate-200 focus:ring-[var(--oi-primary)]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
-        <SelectContent className="border-slate-700 bg-slate-900 text-slate-200">
+        <SelectContent className="border-[var(--oi-border)] bg-[var(--oi-dark)] text-slate-200">
           <SelectItem value="ALL">All statuses</SelectItem>
           <SelectItem value="INVESTIGATING">Investigating</SelectItem>
           <SelectItem value="IDENTIFIED">Identified</SelectItem>
@@ -70,10 +70,10 @@ export function SeverityFilter({
         value={String(hours)}
         onValueChange={(v) => onHoursChange(Number(v))}
       >
-        <SelectTrigger className="h-8 w-[110px] border-slate-700 bg-slate-900 text-xs text-slate-200 focus:ring-blue-500">
+        <SelectTrigger className="h-8 w-[110px] border-[var(--oi-border)] bg-[var(--oi-dark)] text-xs text-slate-200 focus:ring-[var(--oi-primary)]">
           <SelectValue placeholder="Window" />
         </SelectTrigger>
-        <SelectContent className="border-slate-700 bg-slate-900 text-slate-200">
+        <SelectContent className="border-[var(--oi-border)] bg-[var(--oi-dark)] text-slate-200">
           <SelectItem value="6">Last 6h</SelectItem>
           <SelectItem value="12">Last 12h</SelectItem>
           <SelectItem value="24">Last 24h</SelectItem>
@@ -83,7 +83,7 @@ export function SeverityFilter({
       </Select>
 
       {/* Result count */}
-      <span className="ml-auto text-xs text-slate-500">
+      <span className="ml-auto text-xs text-[var(--oi-muted)]">
         {totalCount} event{totalCount !== 1 ? "s" : ""}
       </span>
     </div>

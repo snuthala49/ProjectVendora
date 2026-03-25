@@ -21,7 +21,7 @@ import type { Severity, OutageStatus } from "@/types";
 const parser = new Parser({
   timeout: 12_000,
   headers: {
-    "User-Agent": "VendoraOutageBot/1.0 (https://github.com/vendora)",
+    "User-Agent": "OutageIntelOutageBot/1.0 (https://github.com/outageintel)",
     Accept:
       "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
   },
@@ -184,7 +184,7 @@ export async function pollJSONFeed(vendorId: string, feedUrl: string) {
   try {
     const res = await fetch(feedUrl, {
       headers: {
-        "User-Agent": "VendoraOutageBot/1.0",
+        "User-Agent": "OutageIntelOutageBot/1.0",
         Accept: "application/json",
       },
       signal: AbortSignal.timeout(12_000),

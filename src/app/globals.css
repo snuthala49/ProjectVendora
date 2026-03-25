@@ -5,6 +5,20 @@
 /* ── shadcn/ui CSS variables (dark-mode first for dashboard) ─────────────── */
 @layer base {
   :root {
+    --oi-primary: #0f4c8a;
+    --oi-primary-lt: #1a6bb5;
+    --oi-alert: #e84040;
+    --oi-dark: #0f1923;
+    --oi-surface: #f5f7fa;
+    --oi-text: #1a2332;
+    --oi-muted: #6b7a8d;
+    --oi-border: #e2e8f0;
+    --oi-critical: #e84040;
+    --oi-major: #f97316;
+    --oi-minor: #eab308;
+    --oi-info: #3b82f6;
+    --oi-resolved: #22c55e;
+
     --background: 222 47% 5%;
     --foreground: 213 31% 91%;
 
@@ -48,7 +62,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background-color: hsl(222, 47%, 4%);
+    background-color: var(--oi-dark);
+    color: var(--oi-text);
   }
 
   /* Custom scrollbar */
@@ -60,11 +75,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: hsl(217, 32%, 22%);
+    background: color-mix(in oklab, var(--oi-muted) 45%, transparent);
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(217, 32%, 30%);
+    background: color-mix(in oklab, var(--oi-muted) 70%, transparent);
   }
 }
 

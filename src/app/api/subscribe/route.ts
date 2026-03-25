@@ -55,9 +55,9 @@ export async function POST(request: NextRequest) {
         await resend.emails.send({
           from:
             process.env.EMAIL_FROM ??
-            "Vendora Alerts <alerts@yourdomain.com>",
+            "OutageIntel Alerts <alerts@yourdomain.com>",
           to: email,
-          subject: "✅ Confirm your Vendora outage alerts",
+          subject: "✅ Confirm your OutageIntel outage alerts",
           react: OutageAlertEmail({
             type: "confirmation",
             email,

@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
             await resend.emails.send({
               from:
                 process.env.EMAIL_FROM ??
-                "Vendora Alerts <alerts@yourdomain.com>",
+                "OutageIntel Alerts <alerts@yourdomain.com>",
               to: sub.email,
               subject: `🚨 ${outage.severity}: ${outage.vendor.name} — ${outage.title}`,
               react: OutageAlertEmail({

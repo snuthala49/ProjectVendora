@@ -1,22 +1,34 @@
-# ProjectVendora
+# OutageIntel
 
-ProjectVendora is a vendor outage intelligence dashboard for IT, security, cloud, and SaaS platforms. It aggregates vendor health feeds, normalizes incidents into a single data model, displays live status in a clean dashboard, and supports subscriber notifications for high-severity events.
+> Real-time IT outage intelligence for enterprise teams.
 
-## v1.0 Summary
+**outageintel.org** monitors AWS, Azure, Microsoft 365, Google Cloud, CrowdStrike,
+Salesforce, ServiceNow, Okta, Cloudflare, GitHub, Zoom, Slack, Broadcom and more —
+alerting your team the moment a vendor goes down.
 
-### What it does
-- Tracks service health for major enterprise vendors such as AWS, Azure, GCP, Microsoft 365, Zoom, Slack, Cloudflare, GitHub, Salesforce, Datadog, and more.
-- Polls public vendor status feeds in RSS, Atom, and JSON formats.
-- Normalizes outage data into a PostgreSQL database through Prisma.
-- Exposes API endpoints for vendor status, outage history, subscriptions, and polling.
-- Renders a modern dashboard with vendor cards, outage feed, severity filters, summary metrics, and email subscription flow.
-- Sends notification emails for CRITICAL and HIGH incidents when email delivery is configured.
+## Project Summary
 
-### Core use cases
-- Give IT teams a single-pane view of vendor outages.
-- Help operations teams identify active disruptions faster.
-- Support filtered monitoring by vendor, severity, and time window.
-- Enable alert subscriptions for major incidents.
+OutageIntel is a real-time enterprise outage intelligence platform built to give IT and operations teams a single live view of vendor incidents. It polls public status feeds, normalizes outage events into PostgreSQL with Prisma, exposes API endpoints for status and history, and presents the data in a modern Next.js dashboard with filtering, alert subscriptions, and email notifications.
+
+- Frontend: Next.js 14, React 18, TypeScript, Tailwind CSS
+- Backend: Next.js Route Handlers with polling and subscription APIs
+- Data layer: Prisma ORM with PostgreSQL
+- Notifications: React Email templates with Resend integration
+- Coverage: 16 monitored enterprise vendors with live status and 24-hour outage history
+
+## Features
+- Live outage feed — auto-refreshes every 60 seconds
+- 16+ vendor status pages monitored continuously
+- Email alerts for Critical / Major outages within 90 seconds
+- Severity filters: Critical, Major, Minor, Informational
+- 24-hour outage history with resolution tracking
+- Subscribe with vendor & severity preferences
+- Microsoft Teams & Slack webhook support (Pro)
+
+## Stack
+Next.js 14 · TypeScript · Tailwind CSS · Prisma · PostgreSQL · Resend · Vercel
+
+## Getting Started
 
 ## Architecture
 
@@ -191,7 +203,7 @@ src/
 
 ## Database design
 
-ProjectVendora uses PostgreSQL with Prisma as the schema and query layer.
+OutageIntel uses PostgreSQL with Prisma as the schema and query layer.
 
 ### Main tables
 - `vendors`: Source-of-truth registry of monitored vendors, feed URLs, categories, and status-page links.
@@ -340,4 +352,4 @@ npm run db:reset
 
 ## License / ownership
 
-This repository currently reflects the ProjectVendora v1.0 application state and repository structure prepared for active development on the `Dev` branch.
+This repository currently reflects the OutageIntel v1.0 application state and repository structure prepared for active development on the `Dev` branch.

@@ -84,9 +84,9 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
   },
   header: {
-    background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)",
-    padding: "24px 32px",
-    borderBottom: "3px solid #3b82f6",
+    background: "#0f4c8a",
+    padding: "20px 32px",
+    borderRadius: "8px 8px 0 0",
   },
   logo: {
     color: "#ffffff",
@@ -175,13 +175,17 @@ export function OutageAlertEmail(props: OutageAlertEmailProps) {
     return (
       <Html>
         <Head />
-        <Preview>Confirm your Vendora outage alert subscription</Preview>
+        <Preview>Confirm your OutageIntel outage alert subscription</Preview>
         <Body style={styles.body}>
           <Container style={styles.container}>
             {/* Header */}
             <Section style={styles.header}>
-              <Text style={styles.logo}>🔔 Vendora</Text>
-              <Text style={styles.logoSub}>IT Outage Intelligence</Text>
+              <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: 700, margin: 0 }}>
+                Outage<span style={{ fontWeight: 400, color: "#7eb8f7" }}>Intel</span>
+              </Text>
+              <Text style={{ color: "#93b8d8", fontSize: 13, margin: "4px 0 0" }}>
+                outageintel.org — Live IT Outage Intelligence
+              </Text>
             </Section>
 
             {/* Body */}
@@ -262,8 +266,12 @@ export function OutageAlertEmail(props: OutageAlertEmailProps) {
           <Section
             style={{ ...styles.header, borderBottomColor: sevColor }}
           >
-            <Text style={styles.logo}>🔔 Vendora</Text>
-            <Text style={styles.logoSub}>IT Outage Intelligence</Text>
+            <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: 700, margin: 0 }}>
+              Outage<span style={{ fontWeight: 400, color: "#7eb8f7" }}>Intel</span>
+            </Text>
+            <Text style={{ color: "#93b8d8", fontSize: 13, margin: "4px 0 0" }}>
+              outageintel.org — Live IT Outage Intelligence
+            </Text>
           </Section>
 
           {/* Severity banner */}
@@ -356,7 +364,7 @@ export function OutageAlertEmail(props: OutageAlertEmailProps) {
           <Hr style={styles.hr} />
           <Section style={styles.footer}>
             <Text style={styles.footerText}>
-              You&apos;re receiving this because you subscribed to Vendora
+              You&apos;re receiving this because you subscribed to OutageIntel
               alerts.&nbsp;
               <Link href={unsubscribeUrl} style={styles.link}>
                 Unsubscribe
