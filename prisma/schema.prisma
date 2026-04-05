@@ -15,17 +15,20 @@ datasource db {
 // ─── Vendors ─────────────────────────────────────────────────────────────────
 
 model Vendor {
-  id            String         @id @default(cuid())
-  name          String         @unique
-  slug          String         @unique
-  feedUrl       String
-  feedType      FeedType       @default(RSS)
-  statusPageUrl String?
-  logoEmoji     String?        @default("🌐")
-  category      VendorCategory @default(CLOUD)
-  isActive      Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id              String         @id @default(cuid())
+  name            String         @unique
+  slug            String         @unique
+  feedUrl         String?
+  feedType        FeedType       @default(RSS)
+  incidentsUrl    String?
+  allIncidentsUrl String?
+  rssUrl          String?
+  statusPageUrl   String?
+  logoEmoji       String?        @default("🌐")
+  category        VendorCategory @default(CLOUD)
+  isActive        Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
   outages Outage[]
 
@@ -113,6 +116,12 @@ enum FeedType {
   RSS
   JSON
   ATOM
+  STATUSPAGE_JSON          // Atlassian Statuspage — confirmed working
+  CUSTOM_JSON              // Vendor-specific JSON API
+  RSS_BLOG_FALLBACK        // Blog RSS only — no official status page
+  RSS_PARTIAL              // Partial coverage RSS
+  STATUSPAGE_JSON_UNVERIFIED  // Likely Statuspage but unverified
+  NONE                     // No public feed available
 }
 
 enum VendorCategory {

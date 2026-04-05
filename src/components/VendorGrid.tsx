@@ -11,6 +11,35 @@ interface VendorGridProps {
   onVendorSelect: (slug: string | null) => void;
 }
 
+// ─── Coverage tier types ──────────────────────────────────────────────────────
+
+type VendorCoverage = "FULL" | "PARTIAL" | "BLOG_ONLY" | "NONE" | "UNVERIFIED";
+
+const coverageMap: Record<string, VendorCoverage> = {
+  github:           "FULL",
+  cloudflare:       "FULL",
+  zoom:             "FULL",
+  okta:             "NONE",        // status.okta.com requires auth — no public API
+  slack:            "FULL",
+  salesforce:       "FULL",
+  aws:              "FULL",
+  azure:            "FULL",
+  "google-cloud":   "FULL",
+  "google-workspace": "FULL",
+  crowdstrike:      "BLOG_ONLY",   // No public status page — blog RSS only
+  servicenow:       "NONE",        // No public feed at all
+  "microsoft-365":  "PARTIAL",     // Admin portal requires login for full data
+  broadcom:         "FULL",        // Verified: Sorry™ API at /api/v1/notices
+};
+
+const coverageMeta: Record<VendorCoverage, { label: string; color: string; title: string }> = {
+  FULL:       { label: "Live feed",      color: "#15803d", title: "Official status API confirmed working" },
+  PARTIAL:    { label: "Partial",        color: "#b45309", title: "Limited public data — full dashboard requires login" },
+  BLOG_ONLY:  { label: "Blog only",      color: "#b45309", title: "No official status page — monitoring blog RSS" },
+  NONE:       { label: "No public feed", color: "#dc2626", title: "Vendor has no public status API" },
+  UNVERIFIED: { label: "Unverified",     color: "#6b7280", title: "Feed exists but not confirmed working" },
+};
+
 const STATUS_CARD: Record<VendorStatus, string> = {
   operational:
     "border-green-500/20 hover:border-green-500/40 bg-[var(--oi-dark)]",
@@ -74,6 +103,22 @@ export function VendorGrid({
               showLabel={false}
               className="mx-auto"
             />
+
+            {/* Coverage tier badge */}
+            {(() => {
+              const tier = coverageMap[vendor.slug] ?? "UNVERIFIED";
+              const meta = coverageMeta[tier];
+              if (tier === "FULL") return null; // Don't clutter full-coverage cards
+              return (
+                <span
+                  className="rounded px-1 py-0.5 text-[9px] font-semibold leading-none"
+                  style={{ backgroundColor: meta.color + "22", color: meta.color, border: `1px solid ${meta.color}44` }}
+                  title={meta.title}
+                >
+                  {meta.label}
+                </span>
+              );
+            })()}
 
             {/* Active outage count badge */}
             {vendor.activeOutageCount > 0 && (

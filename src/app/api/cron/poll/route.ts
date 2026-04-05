@@ -13,16 +13,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { subMinutes } from "date-fns";
-import { Resend } from "resend";
 import prisma from "@/lib/prisma";
 import { runAllPollers } from "@/lib/pollers";
-import { OutageAlertEmail } from "@/emails/OutageAlert";
+import { sendSmtpEmail } from "@/lib/mailer";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Vercel Pro/Enterprise only
-
-const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export async function GET(request: NextRequest) {
   // ── Auth check ────────────────────────────────────────────────────────────
@@ -73,7 +69,7 @@ export async function GET(request: NextRequest) {
     // ── 3. Email subscribers ──────────────────────────────────────────────
     let emailsSent = 0;
 
-    if (criticalOutages.length > 0 && resend) {
+    if (criticalOutages.length > 0) {
       const subscribers = await prisma.subscriber.findMany({
         where: { isActive: true, isConfirmed: true },
       });
@@ -106,24 +102,23 @@ export async function GET(request: NextRequest) {
           if (alreadyNotified) continue;
 
           try {
-            await resend.emails.send({
-              from:
-                process.env.EMAIL_FROM ??
-                "OutageIntel Alerts <alerts@yourdomain.com>",
+            const subject = `🚨 ${outage.severity}: ${outage.vendor.name} — ${outage.title}`;
+            const body = [
+              `Vendor: ${outage.vendor.logoEmoji ?? "🌐"} ${outage.vendor.name}`,
+              `Severity: ${outage.severity}`,
+              `Status: ${outage.status}`,
+              `Title: ${outage.title}`,
+              `Detected at: ${outage.startedAt.toISOString()}`,
+              `Description: ${outage.description ?? "N/A"}`,
+              `Status page: ${outage.vendor.statusPageUrl ?? "N/A"}`,
+              "",
+              `Unsubscribe: ${appUrl}/api/subscribe/unsubscribe?token=${sub.unsubscribeToken}`,
+            ].join("\n");
+
+            await sendSmtpEmail({
               to: sub.email,
-              subject: `🚨 ${outage.severity}: ${outage.vendor.name} — ${outage.title}`,
-              react: OutageAlertEmail({
-                type: "alert",
-                vendorName: outage.vendor.name,
-                vendorEmoji: outage.vendor.logoEmoji ?? "🌐",
-                outageTitle: outage.title,
-                severity: outage.severity,
-                status: outage.status,
-                description: outage.description,
-                startedAt: outage.startedAt.toISOString(),
-                statusPageUrl: outage.vendor.statusPageUrl,
-                unsubscribeUrl: `${appUrl}/api/subscribe/unsubscribe?token=${sub.unsubscribeToken}`,
-              }),
+              subject,
+              text: body,
             });
 
             await prisma.notificationLog.create({
