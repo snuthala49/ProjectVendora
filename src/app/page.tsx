@@ -17,6 +17,7 @@ import { VendorGrid } from "@/components/VendorGrid";
 import { SeverityFilter } from "@/components/SeverityFilter";
 import { OutageFeed } from "@/components/OutageFeed";
 import { SubscribeModal } from "@/components/SubscribeModal";
+import { ContactModal } from "@/components/ContactModal";
 import type {
   VendorsResponse,
   OutagesResponse,
@@ -52,6 +53,7 @@ async function fetchOutages(params: {
 
 export default function DashboardPage() {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
   const [severity, setSeverity] = useState<Severity | "ALL">("ALL");
   const [outageStatus, setOutageStatus] = useState<OutageStatus | "ALL">("ALL");
@@ -179,7 +181,7 @@ export default function DashboardPage() {
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-[var(--oi-border)] px-6 py-4 text-xs text-[var(--oi-muted)]">
         <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between">
-          {/* Left — social links */}
+          {/* Left — social links + contact */}
           <div className="flex items-center gap-4">
             <a
               href="https://github.com/snuthala49/ProjectVendora"
@@ -205,6 +207,16 @@ export default function DashboardPage() {
               </svg>
               LinkedIn
             </a>
+            <button
+              onClick={() => setContactOpen(true)}
+              className="flex items-center gap-1.5 transition-colors hover:text-slate-300"
+            >
+              {/* Message icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              Contact
+            </button>
           </div>
 
           {/* Right — copyright */}
@@ -214,6 +226,9 @@ export default function DashboardPage() {
 
       {/* ── Subscribe modal ─────────────────────────────────────────────────── */}
       <SubscribeModal open={subscribeOpen} onOpenChange={setSubscribeOpen} />
+
+      {/* ── Contact modal ───────────────────────────────────────────────────── */}
+      <ContactModal open={contactOpen} onOpenChange={setContactOpen} />
     </div>
   );
 }

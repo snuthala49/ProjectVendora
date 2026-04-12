@@ -5,7 +5,16 @@
 
 // ─── Enum mirrors ────────────────────────────────────────────────────────────
 
-export type FeedType = "RSS" | "JSON" | "ATOM";
+export type FeedType =
+  | "RSS"
+  | "JSON"
+  | "ATOM"
+  | "STATUSPAGE_JSON"
+  | "CUSTOM_JSON"
+  | "RSS_BLOG_FALLBACK"
+  | "RSS_PARTIAL"
+  | "STATUSPAGE_JSON_UNVERIFIED"
+  | "NONE";
 
 export type VendorCategory =
   | "CLOUD"
@@ -38,7 +47,7 @@ export interface VendorWithStatus {
   id: string;
   name: string;
   slug: string;
-  feedUrl: string;
+  feedUrl: string | null;
   feedType: FeedType;
   statusPageUrl: string | null;
   logoEmoji: string | null;
